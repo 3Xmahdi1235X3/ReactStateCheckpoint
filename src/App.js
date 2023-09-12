@@ -1,42 +1,23 @@
 import React, { Component } from 'react';
-
+import pic from "./assets/mehdi.png"
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       person: {
-        fullName: 'John Doe',
-        bio: 'Lorem ipsum dolor sit amet.',
-        imgSrc: 'https://example.com/profile.jpg',
-        profession: 'Software Developer'
+        fullName: 'Mahdi jenhani',
+        bio: 'A skilled full stack developer with a passion for creating exceptional web applications. ',
+        imgSrc: pic,
+        profession: 'Full-stack Developer'
       },
       show: false,
-      intervalId: null,
-      secondsSinceMount: 0
+      lastMountTime: null
     };
   }
 
   componentDidMount() {
-    this.startTimer();
-  }
-
-  componentWillUnmount() {
-    this.stopTimer();
-  }
-
-  startTimer() {
-    const intervalId = setInterval(() => {
-      this.setState(prevState => ({
-        secondsSinceMount: prevState.secondsSinceMount + 1
-      }));
-    }, 1000);
-
-    this.setState({ intervalId });
-  }
-
-  stopTimer() {
-    clearInterval(this.state.intervalId);
+    this.setState({ lastMountTime: new Date() });
   }
 
   toggleShow = () => {
@@ -45,9 +26,21 @@ class App extends Component {
     }));
   };
 
+  getTimeSinceMount() {
+    const { lastMountTime } = this.state;
+
+    if (!lastMountTime) return null;
+
+    const now = new Date();
+    const secondsSinceMount = Math.floor((now - lastMountTime) / 1000);
+
+    return secondsSinceMount;
+  }
+
   render() {
     const { fullName, bio, imgSrc, profession } = this.state.person;
-    const { show, secondsSinceMount } = this.state;
+    const { show } = this.state;
+    const secondsSinceMount = this.getTimeSinceMount();
 
     return (
       <div>
